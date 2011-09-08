@@ -21,16 +21,53 @@ $(document).ready(function(){
     defaults: {
       Title: 'hello',
       URL: 'world'
-    }
+    },
+
+         initialize: function(){
+             alert("Registration Init");   
+         }
  });
 
  var Registration = Backbone.Model.extend({
-          
- };
+         initialize: function(){
+             alert("Registration Init");   
+         }
+ });
   
  var User = Backbone.Model.extend({
-
- };
+         initialize: function(){
+             alert("User Init");   
+         },
+     login: function(username, password){
+        var apiToken;
+        $(function () {
+            $('a#action').click(function () {
+                if (!apiToken) {
+                    // no API token, login first
+                    $.ajax(
+                    {
+                        url: 'https://www.regonline.com/webservices/default.asmx/Login',
+                        dataType: 'jsonp',
+                        data:
+                        {
+                            username: JSON.stringify(username), // Update with your username
+                            password: JSON.stringify(password) // Update with your password
+                        },
+                        success: function (response) {
+                            if (response.d.Data.Success) {
+                                apiToken = response.d.Data.APIToken;
+                                alert(apiToken);
+                            }
+                        }
+                    });
+                }
+                else {
+                    GetPublicEvents();
+                }
+            });
+        });
+     }
+ });
 
  
  // ******************************************
@@ -128,6 +165,23 @@ var Registrations = Backbone.Collection.extend({
     }
   });
 
-  var eventView = new EventView();
+var LoginView = Backbone.View.extend({
+    el: $('div#app'),
+    events: {
+        'click button#login': 'login'
+    },
+    
+    initialize: function() {
+            alert("here");
+        $(this.el).append('<button id="login">Login</button>');
+    },
+
+    login: function() {
+        alert("logged in");
+    }
+});
+
+  //var eventView = new EventView();
+  var loginView = new LoginView();
 });
 
