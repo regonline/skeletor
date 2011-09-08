@@ -11,16 +11,48 @@ $(document).ready(function(){
     success();
   }
   
-  var Event = Backbone.Model.extend({
+  
+ // ******************************************
+ // ******************************************
+ // MODELS
+ // ******************************************
+ // ******************************************
+ var Event = Backbone.Model.extend({
     defaults: {
       Title: 'hello',
       URL: 'world'
     }
-  });
+ });
+
+ var Registration = Backbone.Model.extend({
+          
+ };
   
-  var Events = Backbone.Collection.extend({
-    model: Event
-  });
+ var User = Backbone.Model.extend({
+
+ };
+
+ 
+ // ******************************************
+ // ******************************************
+ // COLLECTIONS
+ // ******************************************
+ // ******************************************
+
+var Events = Backbone.Collection.extend({ 
+        model: Event 
+});
+
+var Registrations = Backbone.Collection.extend({
+
+});
+
+
+ // ******************************************
+ // ******************************************
+ // VIEWS
+ // ******************************************
+ // ******************************************
 
   var EventView = Backbone.View.extend({
     tagName: 'li', // name of tag to be created        

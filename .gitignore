@@ -2,3 +2,11 @@
 *.swp
 .*\~
 
+
+Guardfile
+
+app/.DS_Store
+
+app/.index.html.swp
+
+app/.index.html.swp
