@@ -7,7 +7,6 @@
   <script type="text/javascript" src="underscore-min.js"></script>
   <script type="text/javascript" src="backbone-min.js"></script>
   <script type="text/javascript" src="app.js"></script>
-
   <link href="app.css" rel="stylesheet"/>
 </head>
 <body>
@@ -47,7 +46,6 @@
           <h1>Events <small>Your events</small></h1>
         </div>    
         <div id="events">
-            <a href="#/events/123456">My Test Event</a>
         </div>
     </section>
 
@@ -56,7 +54,6 @@
           <h1>Event Details <small>Your event details</small></h1>
         </div>    
         <div id="event">
-            <a href="#/events/123456/registrations">View Registrations</a>
         </div>
     </section>
 
@@ -65,7 +62,6 @@
           <h1>Registrations <small>For this event</small></h1>
         </div>    
         <div id="registrations">
-            <a href="#/events/123456/registration/987654321">View Registration Details</a>
         </div>
     </section>
     
@@ -74,7 +70,6 @@
           <h1>Registration Details <small>Details about this registrant</small></h1>
         </div>    
         <div id="registration">
-            Reg Details Here
         </div>
     </section>
   </div>
@@ -108,7 +103,159 @@
             </fieldset>
         </form>    
     </script>
+    
+    <script type="text/template" id="events_template">
+        <table id="sorted" class="zebra-striped"> 
+                <thead> 
+                  <tr> 
+                    <th>ID</th> 
+                    <th>Event Title</th> 
+                    <th>Start Date</th> 
+                    <th>Actions</th> 
+                  </tr> 
+                </thead> 
+                <tbody> 
+                  <tr> 
+                    <td>123456</td> 
+                    <td>Activation 2012</td> 
+                    <td>05/01/2012</td> 
+                    <td> 
+                        <a href="#/events/123456" class="btn small primary">View Details</a>
+                    </td>
+                  </tr> 
+                  <tr> 
+                    <td>123456</td> 
+                    <td>Activation 2012</td> 
+                    <td>05/01/2012</td> 
+                    <td> 
+                        <a href="#/events/123456" class="btn small primary">View Details</a>
+                    </td>
+                  </tr> 
+                  <tr> 
+                    <td>123456</td> 
+                    <td>Activation 2012</td> 
+                    <td>05/01/2012</td> 
+                    <td> 
+                        <a href="#/events/123456" class="btn small primary">View Details</a>
+                    </td>
+                  </tr> 
+              </tbody> 
+          </table> 
+          <div class="pagination"> 
+            <ul> 
+              <li class="prev disabled"><a href="#">&larr; Previous</a></li> 
+              <li class="active"><a href="#">1</a></li> 
+              <li><a href="#">2</a></li> 
+              <li><a href="#">3</a></li> 
+              <li><a href="#">4</a></li> 
+              <li><a href="#">5</a></li> 
+              <li class="next"><a href="#">Next &rarr;</a></li> 
+            </ul> 
+          </div>
+    </script>
 
+    <script type="text/template" id="event_template">
+        <h2>Activation 2012</h2>
+        <address>
+            4750 Walnut St.<br/>
+            Boulder, CO<br/>
+            P: 303.577.5100<br/>
+        </address>
+        <blockquote>
+            The best source to learn about Active Network's product suite.
+            <small>Dave Alberga</small>
+        </blockquote>
+        <ul class="tabs">
+            <li class="active"><a href="#">Details</a></li>
+            <li><a href="#">Sessions</a></li>
+            <li><a href="#">Contact Info</a></li>
+        </ul>
+        <div id="details">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et elit sit amet mi hendrerit faucibus. Praesent a ipsum et leo volutpat luctus. Quisque tellus sapien, ultricies id ornare eget, rhoncus ut eros. In velit enim, egestas sed malesuada vel, lacinia ut erat. Nam id quam purus. Nullam eget mauris diam, id aliquet augue. Ut fringilla odio sed nisi consequat vel commodo urna hendrerit. Nunc lorem diam, vulputate a tincidunt in, tempor in lorem. Ut ultrices placerat mauris, id mattis arcu viverra non. Etiam imperdiet sollicitudin nisi aliquam vestibulum.
+<br/><br/>
+Aenean eu congue ante. Mauris at urna eleifend ante malesuada feugiat. Sed fringilla nunc at ligula aliquam bibendum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam est nisi, molestie in fermentum quis, sodales viverra augue. Ut commodo vehicula velit nec pellentesque. Vestibulum eleifend sollicitudin augue, sed cursus leo molestie quis. Maecenas odio tortor, dictum sed lobortis quis, pellentesque at odio. Vivamus et justo massa. Nullam eget mi elit, nec commodo lectus. Nam at fringilla purus. Sed id elementum nulla. Nunc quam orci, pulvinar ut hendrerit at, vehicula id ligula. Praesent tristique condimentum nunc imperdiet fermentum.
+
+        </div>
+        <div class="actions">
+            <a href="#/events/123456/registrations" class="btn primary">View Registrations</a>
+            <a href="http://www.regonline.com/123456" class="btn primary">Register Now</a>
+        </div>
+
+    </script>
+
+    <script type="text/template" id="registrations_template">
+        <table id="sorted" class="zebra-striped"> 
+            <thead> 
+              <tr> 
+                <th>ID</th> 
+                <th>First Name</th> 
+                <th>Last Name</th> 
+                <th>Actions</th> 
+              </tr> 
+            </thead> 
+            <tbody> 
+              <tr> 
+                <td>123456</td> 
+                <td>Joe</td> 
+                <td>Smith</td> 
+                <td> 
+                    <a href="#/events/123456/registration/98765434231" class="btn small primary">View Details</a>
+                </td>
+              </tr> 
+              <tr> 
+                <td>123456</td> 
+                <td>Joe</td> 
+                <td>Smith</td> 
+                <td> 
+                    <a href="#/events/123456/registration/98765434231" class="btn small primary">View Details</a>
+                </td>
+              </tr> 
+              <tr> 
+                <td>123456</td> 
+                <td>Joe</td> 
+                <td>Smith</td> 
+                <td> 
+                    <a href="#/events/123456/registration/98765434231" class="btn small primary">View Details</a>
+                </td>
+              </tr> 
+        </tbody> 
+      </table> 
+      <div class="pagination"> 
+        <ul> 
+          <li class="prev disabled"><a href="#">&larr; Previous</a></li> 
+          <li class="active"><a href="#">1</a></li> 
+          <li><a href="#">2</a></li> 
+          <li><a href="#">3</a></li> 
+          <li><a href="#">4</a></li> 
+          <li><a href="#">5</a></li> 
+          <li class="next"><a href="#">Next &rarr;</a></li> 
+        </ul> 
+      </div>
+
+    </script>
+    <script type="text/template" id="registration_template">
+        <h2>Joe Smith</h2>
+        <address>
+            4750 Walnut St.<br/>
+            Boulder, CO<br/>
+            P: 303.577.5100<br/>
+        </address>
+        <ul class="tabs">
+            <li class="active"><a href="#">Details</a></li>
+            <li><a href="#">Sessions</a></li>
+            <li><a href="#">Contact Info</a></li>
+        </ul>
+        <div id="details">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et elit sit amet mi hendrerit faucibus. Praesent a ipsum et leo volutpat luctus. Quisque tellus sapien, ultricies id ornare eget, rhoncus ut eros. In velit enim, egestas sed malesuada vel, lacinia ut erat. Nam id quam purus. Nullam eget mauris diam, id aliquet augue. Ut fringilla odio sed nisi consequat vel commodo urna hendrerit. Nunc lorem diam, vulputate a tincidunt in, tempor in lorem. Ut ultrices placerat mauris, id mattis arcu viverra non. Etiam imperdiet sollicitudin nisi aliquam vestibulum.
+<br/><br/>
+Aenean eu congue ante. Mauris at urna eleifend ante malesuada feugiat. Sed fringilla nunc at ligula aliquam bibendum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam est nisi, molestie in fermentum quis, sodales viverra augue. Ut commodo vehicula velit nec pellentesque. Vestibulum eleifend sollicitudin augue, sed cursus leo molestie quis. Maecenas odio tortor, dictum sed lobortis quis, pellentesque at odio. Vivamus et justo massa. Nullam eget mi elit, nec commodo lectus. Nam at fringilla purus. Sed id elementum nulla. Nunc quam orci, pulvinar ut hendrerit at, vehicula id ligula. Praesent tristique condimentum nunc imperdiet fermentum.
+
+        </div>
+        <div class="actions">
+            <a href="#/events/123456/registrations" class="btn primary">Update Registration</a>
+        </div>
+
+    </script>
 </body>
 </html>
 

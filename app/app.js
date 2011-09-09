@@ -50,6 +50,7 @@ var AppRouter = Backbone.Router.extend({
         this.clearSections();
         $("section#events").show();
         var eventCollection = new Events({filter: 'Title.Contains("Testing")', orderBy: ''});
+        var eventsView = new EventListView();
     },
 
     registrations: function() {
@@ -177,74 +178,44 @@ var Registrations = Backbone.Collection.extend({
  // ******************************************
  // ******************************************
 
-  var EventView = Backbone.View.extend({
-    tagName: 'li', // name of tag to be created        
-    // `ItemView`s now respond to two clickable actions for each `Item`: swap and delete.
-    events: { 
-      'click span.register':  'register'
-    },    
-    // `initialize()` now binds model change/removal to the corresponding handlers below.
-    initialize: function(){
-      _.bindAll(this, 'render', 'unrender', 'register'); // every function that uses 'this' as the current object should be in here
-
-      //this.model.bind('change', this.render);
-      //this.model.bind('remove', this.unrender);
-    },
-    // `render()` now includes two extra `span`s corresponding to the actions swap and delete.
-    render: function(){
-      //$(this.el).html('<span style="color:black;">'+this.model.get('Title')+' '+this.model.get('URL')+'</span> &nbsp; &nbsp; <span class="swap" style="font-family:sans-serif; color:blue; cursor:pointer;">[swap]</span> <span class="delete" style="cursor:pointer; color:red; font-family:sans-serif;">[delete]</span>');
-      return this; // for chainable calls, like .render().el
-    },
-    // `unrender()`: Makes Model remove itself from the DOM.
-    unrender: function(){
-      $(this.el).remove();
-    },
-    // `swap()` will interchange an `Item`'s attributes. When the `.set()` model function is called, the event `change` will be triggered.
-    register: function(){
-    },
-    // `remove()`: We use the method `destroy()` to remove a model from its collection. Normally this would also delete the record from its persistent storage, but we have overridden that (see above).
-    remove: function(){
-      this.model.destroy();
-    }
-  });
+    var EventView = Backbone.View.extend({
+        el: $('div#event'),
+        // `ItemView`s now respond to two clickable actions for each `Item`: swap and delete.
+        
+        events: { 
+        //   'click span.register':  'register'
+        },    
+        
+        // `initialize()` now binds model change/removal to the corresponding handlers below.
+        initialize: function(){
+          _.bindAll(this, 'render');
+            this.render();
+        },
+        
+        // `render()` now includes two extra `span`s corresponding to the actions swap and delete.
+        render: function(){
+            var template = _.template( $("#event_template").html(), {});
+            this.el.html(template);
+        }
+    });
   
-  // Because the new features (swap and delete) are intrinsic to each `Item`, there is no need to modify `ListView`.
-  var EventList = Backbone.View.extend({
-    el: $('body'), // el attaches to existing element
-    events: {
-      'click button#add': 'addItem'
-    },
-    initialize: function(){
-      _.bindAll(this, 'render', 'addItem', 'appendItem'); // every function that uses 'this' as the current object should be in here
-      
-      this.collection = new List();
-      this.collection.bind('add', this.appendItem); // collection event binder
-
-      this.counter = 0;
-      this.render();
-    },
-    render: function(){
-      $(this.el).append("<button id='add'>Add list item</button>");
-      $(this.el).append("<ul></ul>");
-      _(this.collection.models).each(function(item){ // in case collection is not empty
-        appendItem(item);
-      }, this);
-    },
-    addItem: function(){
-      this.counter++;
-      var item = new Item();
-      item.set({
-        URL: item.get('URL') + this.counter // modify item defaults
-      });
-      this.collection.add(item);
-    },
-    appendItem: function(item){
-      var itemView = new ItemView({
-        model: item
-      });
-      $('ul', this.el).append(itemView.render().el);
-    }
-  });
+    var EventListView = Backbone.View.extend({
+        el: $('div#events'), // el attaches to existing element
+        
+        events: {
+        //    'click button#add': 'addItem'
+        },
+        
+        initialize: function(){
+          _.bindAll(this, 'render');// every function that uses 'this' as the current object should be in here
+            this.render();
+        },
+        
+        render: function(){
+            var template = _.template( $("#events_template").html(), {});
+            this.el.html(template);
+        }
+    });
 
     var LoginView = Backbone.View.extend({
         el: $('div.login_content'),
@@ -276,7 +247,8 @@ var Registrations = Backbone.Collection.extend({
         },
 
         render: function() {
-
+            var template = _.template( $("#registrations_template").html(), {});
+            this.el.html(template);
         }
     });
 
@@ -288,7 +260,8 @@ var Registrations = Backbone.Collection.extend({
         },
 
         render: function() {
-
+            var template = _.template( $("#registration_template").html(), {});
+            this.el.html(template);
         }
     });
 
@@ -298,7 +271,6 @@ var Registrations = Backbone.Collection.extend({
 
     var app_router = new AppRouter;
     var started = Backbone.history.start();
-//    app_router.bind("route:index", function(page) {
-//    });    
+
 });
 
