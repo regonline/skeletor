@@ -1,5 +1,4 @@
-// **This example illustrates the binding of DOM events to View methods.**
-//
+// **This example illustrates the binding of DOM events to View methods.** //
 // _Working example: [2.html](../2.html)._  
 // _[Go to Example 3](3.html)_
 
@@ -17,25 +16,38 @@ $(document).ready(function(){
 
  // ******************************************
  // ******************************************
- // CONTROLLERS
- // ******************************************
- /******************************************
-var EventsController = Backbone.Controller.extend({
+ // ROUTERS 
+ // ****************************************** 
+ // *****************************************
+var AppRouter = Backbone.Router.extend({
     routes: {
-        "events/:id": "show",
+        "events": "events",
+        "events/:id": "showEvent",
+        "registrations": "registrations",
+        "registraitons/:id": "showRegistration",
         "": "index"
     },
 
     index: function() {
-        alert("Need to load the list of events");
+        var loginView = new LoginView();
     },
 
-    show: function(id) {
+    showEvent: function(id) {
+        var eventView = new EventView();
+    },
 
+    showRegistration: function(id) {
+        var registraitonView = new RegistrationView();
+    },
 
+    events: function() {
+        var eventCollection = new Events({filter: '', orderBy: ''});
+    },
+
+    registrations: function() {
+        var registrationList = new RegistrationListView();
     }
 });
-*/
 
 
  // ******************************************
@@ -81,7 +93,7 @@ var EventsController = Backbone.Controller.extend({
                         vars = {warning_level: "success", warning_message: "Successfully Logged In"};
                         $("section#events").show();
                         $("section#user").slideUp();
-                        var eventCollection = new Events({filter: '', orderBy: ''});
+                        app_router.navigate("#events", true);
                     }
                     else {
                         vars = {warning_level: "error", warning_message: "Error Logging In"};
@@ -250,6 +262,9 @@ var LoginView = Backbone.View.extend({
 });
 
   //var eventView = new EventView();
-  var loginView = new LoginView();
+  //var loginView = new LoginView();
+  var app_router = new AppRouter;
+    var started = Backbone.history.start();
+    console.log(started);
 });
 
