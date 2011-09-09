@@ -10,7 +10,6 @@
  
     <!-- Le javascript --> 
     <script src="http://code.jquery.com/jquery-1.5.2.min.js"></script> 
-    <script src="http://autobahn.tablesorter.com/jquery.tablesorter.min.js"></script> 
     <link href="http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.css" rel="stylesheet" type="text/css"> 
     <script src="http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.js"></script> 
     <script src="http://twitter.github.com/bootstrap/assets/js/application.js"></script> 
@@ -77,7 +76,7 @@
               </div> 
             </div> 
         </section>
-        <section id="technology"> 
+        <section id="tech"> 
             <div class="page-header"> 
               <h1>Technology <small>The tech behind the bones</small></h1> 
             </div> 
@@ -89,18 +88,180 @@
                 </p> 
               </div> 
               <div class="span12 columns"> 
-                <h3>Example grid markup</h3> 
-                <p>As shown here, a basic layout can be created with two "columns," each spanning a number of the 16 foundational columns we defined as part of our grid system. See the examples below for more variations.</p> 
+                <h3>Example Model</h3> 
+                <p>This is an example of a sample Backbone Model.</p>
             <pre class="prettyprint linenums"> 
-            &lt;div class="row"&gt;
-              &lt;div class="span6 columns"&gt;
-                ...
-              &lt;/div&gt;
-              &lt;div class="span10 columns"&gt;
-                ...
-              &lt;/div&gt;
-            &lt;/div&gt;
+window.Todo = Backbone.Model.extend({
+
+    defaults: function() {
+      return {
+        done:  false,
+        order: Todos.nextOrder()
+      };
+    },
+
+    toggle: function() {
+      this.save({done: !this.get(&quot;done&quot;)});
+    }
+  });
             </pre> 
+                <h3>Example View</h3> 
+                <p>This is an example of a sample Backbone View.</p>
+            <pre class="prettyprint linenums">
+window.TodoView = Backbone.View.extend({
+
+    tagName:  &quot;li&quot;,
+
+    template: _.template($(&#39;#item-template&#39;).html()),
+
+    events: {
+      &quot;click .check&quot;              : &quot;toggleDone&quot;,
+      &quot;dblclick div.todo-text&quot;    : &quot;edit&quot;,
+      &quot;click span.todo-destroy&quot;   : &quot;clear&quot;,
+      &quot;keypress .todo-input&quot;      : &quot;updateOnEnter&quot;
+    },
+
+    initialize: function() {
+      this.model.bind(&#39;change&#39;, this.render, this);
+      this.model.bind(&#39;destroy&#39;, this.remove, this);
+    },
+
+    render: function() {
+      $(this.el).html(this.template(this.model.toJSON()));
+      this.setText();
+      return this;
+    },
+
+    setText: function() {
+      var text = this.model.get(&#39;text&#39;);
+      this.$(&#39;.todo-text&#39;).text(text);
+      this.input = this.$(&#39;.todo-input&#39;);
+      this.input.bind(&#39;blur&#39;, _.bind(this.close, this)).val(text);
+    },
+
+    toggleDone: function() {
+      this.model.toggle();
+    },
+
+    edit: function() {
+      $(this.el).addClass(&quot;editing&quot;);
+      this.input.focus();
+    },
+
+    close: function() {
+      this.model.save({text: this.input.val()});
+      $(this.el).removeClass(&quot;editing&quot;);
+    },
+
+    updateOnEnter: function(e) {
+      if (e.keyCode == 13) this.close();
+    },
+
+    remove: function() {
+      $(this.el).remove();
+    },
+
+    clear: function() {
+      this.model.destroy();
+    }
+
+  });
+
+            </pre> 
+                <h3>Example Controller (Router)</h3> 
+                <p>This is an example of a sample Backbone Router (previously called a controller).</p>
+            <pre class="prettyprint linenums"> 
+var AppRouter = Backbone.Router.extend({
+    routes: {
+        "/events": "events",
+        "/events/:id": "showEvent",
+        "/events/:id/registrations": "registrations",
+        "/events/:id/registration/:rid": "showRegistration",
+        "": "index"
+    },
+
+    index: function() {
+        this.clearSections();
+        $("section#user").show();
+        var loginView = new LoginView();
+    },
+
+    showEvent: function(id) {
+        this.clearSections();
+        $("section#event").show();
+        var eventView = new EventView();
+    },
+
+    showRegistration: function(id) {
+        this.clearSections();
+        $("section#registration").show();
+        var registraitonView = new RegistrationView();
+    },
+
+    events: function() {
+        this.clearSections();
+        $("section#events").show();
+        var eventCollection = new Events({filter: 'Title.Contains("Testing")', orderBy: ''});
+        var eventsView = new EventListView();
+    },
+
+    registrations: function() {
+        this.clearSections();
+        $("section#registrations").show();
+        var registrationList = new RegistrationListView();
+    },
+
+    clearSections: function() {
+        $("section").hide();
+        setTimeout("$('.alert-message').fadeOut()", 7000);
+    }
+});
+            </pre> 
+              </div> 
+            </div> 
+
+
+
+            <div class="row"> 
+              <div class="span4 columns"> 
+                <h2>Twitter's Bootstrap</h2> 
+                <p>
+                <a href="http://twitter.github.com/bootstrap/">Bootstrap</a> is a UI toolkit from Twitter which includes a base 
+                CSS class and the associated assets which drive the layout of the Skeletor project.  
+                </p> 
+              </div> 
+              <div class="span12 columns"> 
+                <h3>Screenshot</h3> 
+                <img src="bootstrap.png" alt="screenshoot"/>
+            </div>
+
+        </div>
+        </section>
+
+        <section id="application"> 
+            <div class="page-header"> 
+              <h1>Sample Application <small>Basic sample use</small></h1> 
+            </div> 
+            <div class="row"> 
+              <div class="span16 columns"> 
+                <p>
+                There is a basic application written using Backbone.js and the RegOnline API.  The application allows 
+                you to log in to your RegOnline account, see a list of events, and registrations.  
+                </p>
+                <a href="app" class="btn large primary">Launch Application</a>
+              </div> 
+            </div> 
+        </section>
+        <section id="source"> 
+            <div class="page-header"> 
+              <h1>Source Code <small>For your enjoyment</small></h1> 
+            </div> 
+            <div class="row"> 
+              <div class="span16 columns"> 
+                <p>
+                    The source code for this project is available on GitHub.
+                </p>
+                <a href="https://github.com/regonline/skeletor" class="btn large primary">View Source</a>
               </div> 
             </div> 
         </section>
