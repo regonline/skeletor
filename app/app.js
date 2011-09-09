@@ -44,14 +44,9 @@ var EventsController = Backbone.Controller.extend({
  // ******************************************
  // ******************************************
  var Event = Backbone.Model.extend({
-    defaults: {
-      Title: 'hello',
-      URL: 'world'
-    },
-
-         initialize: function(){
-             alert("Registration Init");   
-         }
+     initialize: function(){
+         alert("Event Init");   
+     }
  });
 
  var Registration = Backbone.Model.extend({
@@ -86,6 +81,7 @@ var EventsController = Backbone.Controller.extend({
                         vars = {warning_level: "success", warning_message: "Successfully Logged In"};
                         $("section#events").show();
                         $("section#user").slideUp();
+                        var eventCollection = new Events({filter: '', orderBy: ''});
                     }
                     else {
                         vars = {warning_level: "error", warning_message: "Error Logging In"};
@@ -112,7 +108,38 @@ var EventsController = Backbone.Controller.extend({
  // ******************************************
 
 var Events = Backbone.Collection.extend({ 
-        model: Event 
+    model: Event,
+    
+    initialize: function(params) {
+        alert('collection init');
+        $.ajax({
+            url: 'https://www.regonline.com/api/default.asmx/GetEvents',
+            dataType: 'jsonp',
+            data: 
+            {
+                filter: JSON.stringify(params.filter),
+                orderBy: JSON.stringify(params.orderBy),
+                APIToken: encodeURI(apiToken)
+            },
+            success: function (response) {
+                // TODO: Move this to a callback
+                var vars;
+                console.log(response);
+                if (response.d.Success) {
+                    vars = {warning_level: "success", warning_message: "Got events!"};
+                    $("section#events").show();
+                    $("section#user").slideUp();
+                }
+                else {
+                    vars = {warning_level: "error", warning_message: "Error getting events"};
+                }
+                
+                var template = _.template( $("#alert_template").html(), vars);
+                $("#alerts").html(template);
+
+            }
+        });
+    }
 });
 
 var Registrations = Backbone.Collection.extend({
