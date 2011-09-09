@@ -11,7 +11,33 @@ $(document).ready(function(){
     success();
   }
   
-  
+    // Globals 
+    // TODO: Clean this up
+    var apiToken;
+
+ // ******************************************
+ // ******************************************
+ // CONTROLLERS
+ // ******************************************
+ /******************************************
+var EventsController = Backbone.Controller.extend({
+    routes: {
+        "events/:id": "show",
+        "": "index"
+    },
+
+    index: function() {
+        alert("Need to load the list of events");
+    },
+
+    show: function(id) {
+
+
+    }
+});
+*/
+
+
  // ******************************************
  // ******************************************
  // MODELS
@@ -35,37 +61,46 @@ $(document).ready(function(){
  });
   
  var User = Backbone.Model.extend({
-         initialize: function(){
-             alert("User Init");   
-         },
+     initialize: function(){
+
+     },
+
      login: function(username, password){
-        var apiToken;
-        $(function () {
-            $('a#action').click(function () {
-                if (!apiToken) {
-                    // no API token, login first
-                    $.ajax(
-                    {
-                        url: 'https://www.regonline.com/webservices/default.asmx/Login',
-                        dataType: 'jsonp',
-                        data:
-                        {
-                            username: JSON.stringify(username), // Update with your username
-                            password: JSON.stringify(password) // Update with your password
-                        },
-                        success: function (response) {
-                            if (response.d.Data.Success) {
-                                apiToken = response.d.Data.APIToken;
-                                alert(apiToken);
-                            }
-                        }
-                    });
-                }
-                else {
-                    GetPublicEvents();
+        
+        if (!apiToken) {
+            // no API token, login first
+            $.ajax(
+            {
+                url: 'https://www.regonline.com/webservices/default.asmx/Login',
+                dataType: 'jsonp',
+                data:
+                {
+                    username: JSON.stringify(username), // Update with your username
+                    password: JSON.stringify(password) // Update with your password
+                },
+                success: function (response) {
+                    // TODO: Move this to a callback
+                    var vars;
+                    if (response.d.Data.Success) {
+                        apiToken = response.d.Data.APIToken;
+                        vars = {warning_level: "success", warning_message: "Successfully Logged In"};
+                        $("section#events").show();
+                        $("section#user").slideUp();
+                    }
+                    else {
+                        vars = {warning_level: "error", warning_message: "Error Logging In"};
+                    }
+                    
+                    var template = _.template( $("#alert_template").html(), vars);
+                    $("#alerts").html(template);
                 }
             });
-        });
+        }
+        else {
+
+        }
+
+        return apiToken != "";
      }
  });
 
@@ -166,18 +201,24 @@ var Registrations = Backbone.Collection.extend({
   });
 
 var LoginView = Backbone.View.extend({
-    el: $('div#app'),
+    el: $('div.login_content'),
     events: {
-        'click button#login': 'login'
+        'click input#btnLogin': 'login'
     },
     
     initialize: function() {
-            alert("here");
-        $(this.el).append('<button id="login">Login</button>');
+        this.render();
+    },
+
+    render: function() {
+        var template = _.template( $("#login_template").html(), {});
+        this.el.html(template);
     },
 
     login: function() {
-        alert("logged in");
+        var user = new User();
+        user.login($("#username").val(), $("#password").val());
+                //this.el.html(template);
     }
 });
 

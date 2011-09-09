@@ -30,24 +30,58 @@
   </div><!-- /topbar-wrapper --> 
   
   <div class="container outer">
+    <div id="alerts">
+
+    </div>
+
 	<section id="user">
 	  <div class="page-header">
 	    <h1>User Login <small>Login to your RegOnline account here</small></h1>
 	  </div>
-	  <div class="row">
-	    <div id="app">
-	    </div>
+	  <div class="row login_content">
+          <!-- Content Loads Here -->
 	  </div>
 	</section>
+    <section id="events">
+        <div class="page-header">
+          <h1>Events <small>Your events</small></h1>
+        </div>    
+        <div id="events">
 
+        </div>
+    </section>
 
-	<script type="text/javascript">
-	  $(function() {
-	//    App.init();
-	  });
-	</script>
 
   </div>
+
+    <script type="text/template" id="alert_template">
+        <div class="alert-message <%= warning_level %>"> 
+            <a class="close" onclick="$(this).parent().fadeOut()" href="#">&times;</a> 
+            <p><%= warning_message %></p>
+        </div>
+    </script>
+<script type="text/template" id="login_template">
+    <form>
+        <fieldset>
+            <legend>Login Here</legend>
+            <div class="clearfix">
+                <label for="username">Username</label>
+                <div class="input">
+                    <input class="xlarge" id="username" name="username" size="30" type="text"/>
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="password">Password</label>
+                <div class="input">
+                    <input class="xlarge" id="password" name="password" size="30" type="password"/>
+                </div>
+            </div>
+            <div class="actions">
+                <input type="submit" id="btnLogin" class="btn primary" value="Login" onclick="return false;">
+            </div>            
+        </fieldset>
+    </form>    
+</script>
 
 </body>
 </html>
