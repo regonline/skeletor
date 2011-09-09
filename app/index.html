@@ -19,9 +19,9 @@
           <h3><a href="#">Skeletor</a></h3> 
           <ul class="nav"> 
             <li class="active"><a href="#">Home</a></li> 
-            <li><a href="#">Manager</a></li> 
-            <li><a href="#">Report</a></li> 
-            <li><a href="#">Attendee</a></li> 
+            <li><a href="#/events">Events</a></li> 
+            <li><a href="#/events/123456/registrations">Registrations</a></li> 
+            <li><a href="#/events/123456/registration/0987654321">Attendee</a></li> 
             <li class="dropdown">         
           </ul> 
         </div> 
@@ -47,11 +47,36 @@
           <h1>Events <small>Your events</small></h1>
         </div>    
         <div id="events">
-
+            <a href="#/events/123456">My Test Event</a>
         </div>
     </section>
 
+    <section id="event">
+        <div class="page-header">
+          <h1>Event Details <small>Your event details</small></h1>
+        </div>    
+        <div id="event">
+            <a href="#/events/123456/registrations">View Registrations</a>
+        </div>
+    </section>
 
+    <section id="registrations">
+        <div class="page-header">
+          <h1>Registrations <small>For this event</small></h1>
+        </div>    
+        <div id="registrations">
+            <a href="#/events/123456/registration/987654321">View Registration Details</a>
+        </div>
+    </section>
+    
+    <section id="registration">
+        <div class="page-header">
+          <h1>Registration Details <small>Details about this registrant</small></h1>
+        </div>    
+        <div id="registration">
+            Reg Details Here
+        </div>
+    </section>
   </div>
 
     <script type="text/template" id="alert_template">
@@ -68,13 +93,13 @@
                 <div class="clearfix">
                     <label for="username">Username</label>
                     <div class="input">
-                        <input class="xlarge" id="username" name="username" size="30" type="text"/>
+                        <input class="xlarge" id="username" name="username" value="jackie12" size="30" type="text"/>
                     </div>
                 </div>
                 <div class="clearfix">
                     <label for="password">Password</label>
                     <div class="input">
-                        <input class="xlarge" id="password" name="password" size="30" type="password"/>
+                        <input class="xlarge" id="password" name="password" size="30" value="jackie1212" type="password"/>
                     </div>
                 </div>
                 <div class="actions">

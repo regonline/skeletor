@@ -21,31 +21,46 @@ $(document).ready(function(){
  // *****************************************
 var AppRouter = Backbone.Router.extend({
     routes: {
-        "events": "events",
-        "events/:id": "showEvent",
-        "registrations": "registrations",
-        "registraitons/:id": "showRegistration",
+        "/events": "events",
+        "/events/:id": "showEvent",
+        "/events/:id/registrations": "registrations",
+        "/events/:id/registration/:rid": "showRegistration",
         "": "index"
     },
 
     index: function() {
+        this.clearSections();
+        $("section#user").show();
         var loginView = new LoginView();
     },
 
     showEvent: function(id) {
+        this.clearSections();
+        $("section#event").show();
         var eventView = new EventView();
     },
 
     showRegistration: function(id) {
+        this.clearSections();
+        $("section#registration").show();
         var registraitonView = new RegistrationView();
     },
 
     events: function() {
-        var eventCollection = new Events({filter: '', orderBy: ''});
+        this.clearSections();
+        $("section#events").show();
+        var eventCollection = new Events({filter: 'Title.Contains("Testing")', orderBy: ''});
     },
 
     registrations: function() {
+        this.clearSections();
+        $("section#registrations").show();
         var registrationList = new RegistrationListView();
+    },
+
+    clearSections: function() {
+        $("section").hide();
+        setTimeout("$('.alert-message').fadeOut()", 7000);
     }
 });
 
@@ -57,7 +72,6 @@ var AppRouter = Backbone.Router.extend({
  // ******************************************
  var Event = Backbone.Model.extend({
      initialize: function(){
-         alert("Event Init");   
      }
  });
 
@@ -93,7 +107,7 @@ var AppRouter = Backbone.Router.extend({
                         vars = {warning_level: "success", warning_message: "Successfully Logged In"};
                         $("section#events").show();
                         $("section#user").slideUp();
-                        app_router.navigate("#events", true);
+                        app_router.navigate("/events", true);
                     }
                     else {
                         vars = {warning_level: "error", warning_message: "Error Logging In"};
@@ -123,7 +137,6 @@ var Events = Backbone.Collection.extend({
     model: Event,
     
     initialize: function(params) {
-        alert('collection init');
         $.ajax({
             url: 'https://www.regonline.com/api/default.asmx/GetEvents',
             dataType: 'jsonp',
@@ -139,8 +152,7 @@ var Events = Backbone.Collection.extend({
                 console.log(response);
                 if (response.d.Success) {
                     vars = {warning_level: "success", warning_message: "Got events!"};
-                    $("section#events").show();
-                    $("section#user").slideUp();
+                    //$("section#user").slideUp();
                 }
                 else {
                     vars = {warning_level: "error", warning_message: "Error getting events"};
@@ -175,12 +187,12 @@ var Registrations = Backbone.Collection.extend({
     initialize: function(){
       _.bindAll(this, 'render', 'unrender', 'register'); // every function that uses 'this' as the current object should be in here
 
-      this.model.bind('change', this.render);
-      this.model.bind('remove', this.unrender);
+      //this.model.bind('change', this.render);
+      //this.model.bind('remove', this.unrender);
     },
     // `render()` now includes two extra `span`s corresponding to the actions swap and delete.
     render: function(){
-      $(this.el).html('<span style="color:black;">'+this.model.get('Title')+' '+this.model.get('URL')+'</span> &nbsp; &nbsp; <span class="swap" style="font-family:sans-serif; color:blue; cursor:pointer;">[swap]</span> <span class="delete" style="cursor:pointer; color:red; font-family:sans-serif;">[delete]</span>');
+      //$(this.el).html('<span style="color:black;">'+this.model.get('Title')+' '+this.model.get('URL')+'</span> &nbsp; &nbsp; <span class="swap" style="font-family:sans-serif; color:blue; cursor:pointer;">[swap]</span> <span class="delete" style="cursor:pointer; color:red; font-family:sans-serif;">[delete]</span>');
       return this; // for chainable calls, like .render().el
     },
     // `unrender()`: Makes Model remove itself from the DOM.
@@ -189,11 +201,6 @@ var Registrations = Backbone.Collection.extend({
     },
     // `swap()` will interchange an `Item`'s attributes. When the `.set()` model function is called, the event `change` will be triggered.
     register: function(){
-      var swapped = {
-        Title: this.model.get('URL'), 
-        URL: this.model.get('Title')
-      };
-      this.model.set(swapped);
     },
     // `remove()`: We use the method `destroy()` to remove a model from its collection. Normally this would also delete the record from its persistent storage, but we have overridden that (see above).
     remove: function(){
@@ -239,32 +246,59 @@ var Registrations = Backbone.Collection.extend({
     }
   });
 
-var LoginView = Backbone.View.extend({
-    el: $('div.login_content'),
-    events: {
-        'click input#btnLogin': 'login'
-    },
-    
-    initialize: function() {
-        this.render();
-    },
+    var LoginView = Backbone.View.extend({
+        el: $('div.login_content'),
+        events: {
+            'click input#btnLogin': 'login'
+        },
+        
+        initialize: function() {
+            this.render();
+        },
 
-    render: function() {
-        var template = _.template( $("#login_template").html(), {});
-        this.el.html(template);
-    },
+        render: function() {
+            var template = _.template( $("#login_template").html(), {});
+            this.el.html(template);
+        },
 
-    login: function() {
-        var user = new User();
-        user.login($("#username").val(), $("#password").val());
-                //this.el.html(template);
+        login: function() {
+            var user = new User();
+            user.login($("#username").val(), $("#password").val());
+                    //this.el.html(template);
+        }
+    });
+
+    var RegistrationListView = Backbone.View.extend({
+        el: $('div#registrations'),
+
+        initialize: function() {
+            this.render();
+        },
+
+        render: function() {
+
+        }
+    });
+
+    var RegistrationView = Backbone.View.extend({
+        el: $('div#registration'),
+
+        initialize: function() {
+            this.render();
+        },
+
+        render: function() {
+
+        }
+    });
+
+    function closeAlert() {
+        $('a.close').fadeOut();
     }
-});
 
-  //var eventView = new EventView();
-  //var loginView = new LoginView();
-  var app_router = new AppRouter;
+    var app_router = new AppRouter;
     var started = Backbone.history.start();
-    console.log(started);
+//    app_router.bind("route:index", function(page) {
+//    });    
 });
 
